@@ -22,12 +22,13 @@ public class AnnotationHandler{
     private Trees trees;
     private Messager messager;
     private java.util.List<JCTree.JCCompilationUnit> roots = new ArrayList<JCTree.JCCompilationUnit>();
+    private Context context;
 
     public AnnotationHandler(ProcessingEnvironment procEnv){
         processingEnv = (JavacProcessingEnvironment) procEnv;
         trees = Trees.instance(procEnv);
         messager = procEnv.getMessager();
-
+        context = new Context(processingEnv);
     }
 
 
@@ -64,7 +65,7 @@ public class AnnotationHandler{
         for (List<JavaNode> nodes:cleass){
 
             for (JavaNode n: nodes){
-                n.traverse(new MyJavacVisitor(messager));
+                n.traverse(new MyJavacVisitor(context));
             }
         }
 
@@ -73,7 +74,7 @@ public class AnnotationHandler{
 
 
     private JavaNode buildJavaClassNode(JCTree jcTree){
-        return new JavaNodeGroup(jcTree,null, JavaNode.Kind.CLASS,new ClassAndMethodCollection());
+        return new JavaNodeGroup(context,jcTree,null, JavaNode.Kind.CLASS,new ClassAndMethodCollection());
     }
 
     private JCTree.JCCompilationUnit getUnitFromElement(Element element){

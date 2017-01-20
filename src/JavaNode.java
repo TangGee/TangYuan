@@ -21,6 +21,7 @@ public class JavaNode {
     private JCTree tree;
     private Kind kind;
     private JavaNode parent;
+    protected Context context;
 
     //收集当前节点下子的关心的节点
     private JavaCollectiontor collectiontor;
@@ -29,11 +30,16 @@ public class JavaNode {
         return collectiontor;
     }
 
-    public JavaNode(JCTree node, JavaNode parent, Kind kind, JavaCollectiontor collectiontor) {
+    public JavaNode(Context context,JCTree node, JavaNode parent, Kind kind, JavaCollectiontor collectiontor) {
         this.tree = node;
         this.kind = kind;
         this.parent = parent;
         this.collectiontor = collectiontor;
+        this.context = context;
+    }
+
+    public Context getContext() {
+        return context;
     }
 
     public JCTree get() {

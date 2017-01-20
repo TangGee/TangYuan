@@ -33,8 +33,8 @@ public class ClassAndMethodCollection implements JavaCollectiontor {
 
     private JavaNode buildNode(JavaNode parent, JCTree node, JavaNode.Kind kind){
         if (TypeUtils.typeIsGroup(kind)){
-            return new JavaNodeGroup(node,parent, kind,this);
+            return new JavaNodeGroup(parent.getContext(),node,parent, kind,this);
         }
-        return new JavaNode(node,parent, kind,this);
+        return new JavaNode(parent.getContext(),node,parent, kind,this);
     }
 }

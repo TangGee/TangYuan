@@ -3,16 +3,26 @@ import com.sun.tools.javac.tree.JCTree;
 import javax.annotation.processing.Messager;
 import javax.tools.Diagnostic;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by tlinux on 17-1-17.
  */
 public class MyJavacVisitor implements JavacVisitor{
 
+
+    private Map<String, AnnoatationService> serviceMap ;
+
+    private Context context;
     private Messager messager;
 
-    public MyJavacVisitor(Messager messager){
-        this.messager = messager;
+    public MyJavacVisitor(Context context){
+        this.serviceMap = ServiceLoader.loadService();
+        this.context = context;
+        this.messager = context.getMessager();
+        if (serviceMap.isEmpty()){
+            messager.printMessage(Diagnostic.Kind.WARNING,"no service ");
+        }
     }
 
     @Override
@@ -59,8 +69,10 @@ public class MyJavacVisitor implements JavacVisitor{
             return;
         }
         for (JCTree.JCAnnotation a: method.mods.annotations){
-            //TODOa
-            messager.printMessage(Diagnostic.Kind.WARNING,a.toString());
+           for (Map.Entry<String,AnnoatationService> entry: serviceMap.entrySet()){
+               messager.printMessage(Diagnostic.Kind.NOTE,"handle annoatation use: "+entry.getValue());
+               entry.getValue().processAnnoation(node, JavaNode.Kind.METHOD,a);
+           }
         }
     }
 

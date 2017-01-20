@@ -13,8 +13,8 @@ public class JavaNodeGroup extends JavaNode {
     private List<JavaNode> children;
 
 
-    public JavaNodeGroup(JCTree node, JavaNode parent, Kind kind, JavaCollectiontor collectiontor) {
-        super(node, parent, kind, collectiontor);
+    public JavaNodeGroup(Context context,JCTree node, JavaNode parent, Kind kind, JavaCollectiontor collectiontor) {
+        super(context,node, parent, kind, collectiontor);
 
         //校验类型　没有全写
         if (!TypeUtils.typeIsGroup(kind)){
